@@ -1,0 +1,67 @@
+@import "~include-media/dist/include-media";
+@import "../styles/mixins";
+
+.App {
+  width: inherit;
+  height: inherit;
+  background: linear-gradient(
+      255.35deg,
+      #dc3131 0.83%,
+      rgba(255, 79, 79, 0) 108.93%
+    ),
+    #ff5e56;
+  box-shadow: 0 -0.11px 16.9495px rgba(183, 187, 225, 0.33);
+
+  &Container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    min-width: map-get($breakpoints, phone);
+    max-width: map-get($breakpoints, desktop);
+    height: inherit;
+    margin: auto;
+  }
+
+  &Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    @include padding-x(24px);
+    @include padding-y(12px);
+
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 12px;
+    line-height: 16px;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: #000;
+      background-color: #fff;
+    }
+
+    &:disabled {
+      color: #fff;
+      cursor: not-allowed;
+      background-color: #bec5cc;
+      border-color: #bec5cc;
+    }
+
+    @include media(">=tablet") {
+      @include padding-x(32px);
+      @include padding-y(16px);
+
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
