@@ -4,7 +4,8 @@
 .App {
   width: inherit;
   height: inherit;
-  background: linear-gradient(
+  background:
+    linear-gradient(
       255.35deg,
       #dc3131 0.83%,
       rgba(255, 79, 79, 0) 108.93%
@@ -36,10 +37,10 @@
     font-size: 12px;
     line-height: 16px;
     color: #fff;
+    cursor: pointer;
     background-color: transparent;
     border: 1px solid #fff;
     border-radius: 6px;
-    outline: none;
     transition: all 0.3s ease-in-out;
 
     &:hover,

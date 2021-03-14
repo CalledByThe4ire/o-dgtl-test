@@ -1,0 +1,201 @@
+@import "~include-media/dist/include-media";
+@import "../../styles/_variables";
+@import "../../styles/_mixins";
+
+.Form {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+
+  &Label {
+    $label: &;
+
+    display: flex;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  &Input {
+    display: flex;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
+    color: #000;
+    border: 1px solid #dfe3e6;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+
+    &Error {
+      margin-bottom: 4px;
+      border-color: $primary;
+
+      &Message {
+        font-size: 10px;
+        line-height: 12px;
+        color: $primary;
+      }
+    }
+
+    &:hover {
+      border-color: $secondary;
+    }
+
+    &:disabled {
+      color: #808080;
+      border-color: #808080;
+    }
+
+    &::placeholder {
+      color: #bec5cc;
+    }
+  }
+
+  &Group {
+    $form-group: &;
+
+    display: flex;
+    flex-flow: column wrap;
+    margin-bottom: 24px;
+
+    @include media(">=tablet") {
+      &:last-of-type {
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 40px;
+
+        > *:first-child {
+          margin: 0;
+          margin-right: 78px;
+        }
+      }
+    }
+
+    @include media(">=desktop") {
+      &:last-of-type {
+        > *:first-child {
+          margin: 0;
+          margin-right: 32px;
+        }
+      }
+    }
+
+    &BtnWrapper {
+      @include padding-y(16px);
+
+      @include media(">=tablet") {
+        @include padding-y(initial);
+      }
+
+      &:last-child {
+        margin-bottom: 100px;
+
+        @include media(">=tablet") {
+          margin-bottom: initial;
+        }
+      }
+
+      #{$form-group}Btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        @include padding-x(12px);
+        @include padding-y(6px);
+
+        color: #000;
+        pointer-events: none;
+        background-color: #eef0f2;
+        border-radius: 50px;
+        transition: all 0.3s ease-in-out;
+
+        &:not(:last-child) {
+          margin-right: 8px;
+
+          @include media(">=tablet") {
+            margin-right: 16px;
+          }
+        }
+
+        &:hover {
+          background-color: #dfe3e6;
+          transition: inherit;
+        }
+
+        &Active,
+        &:hover,
+        &:active {
+          color: #fff;
+          background: linear-gradient(
+              255.35deg,
+              #dc3131 0.83%,
+              rgba(255, 79, 79, 0) 108.93%
+            ),
+            #ff5e56;
+          transition: inherit;
+        }
+      }
+    }
+  }
+
+  &Btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 12px;
+    line-height: 16px;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(
+        255.35deg,
+        #dc3131 0.83%,
+        rgba(255, 79, 79, 0) 108.93%
+      ),
+      #ff5e56;
+    border-radius: 6px;
+    box-shadow: 0 0 24px rgba(234, 0, 41, 0.33);
+    transition: all 0.3s ease-in-out;
+
+    &:hover,
+    &:active {
+      background: $primary;
+      transition: inherit;
+    }
+
+    &:disabled {
+      background: $secondary;
+      box-shadow: none;
+      transition: inherit;
+    }
+
+    @include media(">=tablet") {
+      padding: 16px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    &Text {
+      display: inline-flex;
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 24px;
+      color: $primary;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        color: #f53a31;
+      }
+    }
+  }
+
+  &Submit {
+    cursor: pointer;
+  }
+}
