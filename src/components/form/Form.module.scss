@@ -60,7 +60,7 @@
     margin-bottom: 24px;
 
     @include media(">=tablet") {
-      &:last-of-type {
+      &:nth-child(2) {
         flex-flow: row nowrap;
         align-items: center;
         justify-content: flex-start;
@@ -74,7 +74,7 @@
     }
 
     @include media(">=desktop") {
-      &:last-of-type {
+      &:nth-child(2) {
         > *:first-child {
           margin: 0;
           margin-right: 32px;
@@ -128,7 +128,8 @@
         &:hover,
         &:active {
           color: #fff;
-          background: linear-gradient(
+          background:
+            linear-gradient(
               255.35deg,
               #dc3131 0.83%,
               rgba(255, 79, 79, 0) 108.93%
@@ -152,7 +153,8 @@
     line-height: 16px;
     color: #fff;
     cursor: pointer;
-    background: linear-gradient(
+    background:
+      linear-gradient(
         255.35deg,
         #dc3131 0.83%,
         rgba(255, 79, 79, 0) 108.93%
@@ -169,6 +171,7 @@
     }
 
     &:disabled {
+      cursor: not-allowed;
       background: $secondary;
       box-shadow: none;
       transition: inherit;
@@ -191,6 +194,10 @@
 
       &:hover {
         color: #f53a31;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
       }
     }
   }

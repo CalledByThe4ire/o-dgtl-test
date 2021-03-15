@@ -8,6 +8,7 @@ export const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
   ADD_SALARY: 'ADD_SALARY',
+  CLEAR_SALARY: 'CLEAR_SALARY',
 };
 
 export const createAction = (type, payload) => {
@@ -35,6 +36,11 @@ export const reducer = (state, action) => {
         ...state,
         salary: action.payload,
       };
+      case actions.CLEAR_SALARY:
+        return {
+          ...state,
+          salary: null,
+        };
     default:
       return state;
   }
