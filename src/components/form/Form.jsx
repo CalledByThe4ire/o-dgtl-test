@@ -1,4 +1,4 @@
-import React, { Children, useContext } from 'react';
+import React, { Children, useContext, useEffect, useRef } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import MaskedInput from 'react-text-mask';
@@ -30,12 +30,26 @@ const ModalForm = () => {
   const store = useContext(StoreContext);
   const dispatch = store.dispatch;
   const state = store.state;
+  const inputSalaryRef = useRef();
+  const buttonSubmitRef = useRef();
+
+  useEffect(() => {
+    inputSalaryRef && inputSalaryRef.current.inputElement.focus();
+
+    if (buttonSubmitRef) {
+      buttonSubmitRef.current.classList.add(classnames(styles.FormBtnOffsetTop));
+    }
+  }, []);
 
   const handleClick = (event, values) => {
     const { salary } = values;
 
     if (salary) {
       dispatch(createAction(actions.ADD_SALARY, extractNumber(salary)));
+    }
+
+    if (buttonSubmitRef.current) {
+      buttonSubmitRef.current.classList.remove(classnames(styles.FormBtnOffsetTop));
     }
   };
 
@@ -59,11 +73,18 @@ const ModalForm = () => {
           )
           .required('Поле обязательно для заполнения'),
       })}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        setSubmitting(false);
+
         const summary = {
           salary: extractNumber(values.salary),
           payments: values.payments.map((payment) => JSON.parse(payment)),
         };
+
+        resetForm({ values: '' });
+
+        dispatch(createAction(actions.CLEAR_SALARY));
+        dispatch(createAction(actions.HIDE_MODAL));
 
         alert(JSON.stringify(summary, null, 2));
       }}
@@ -71,15 +92,20 @@ const ModalForm = () => {
       {(props) => {
         return (
           <Form className={styles.Form}>
-            <div className={styles.FormGroup}>
-              <label className={styles.FormLabel} htmlFor="salary">
+            <div
+              className={classnames(styles.FormGroup, styles.FormGroupSalary)}
+            >
+              <label
+                className={classnames(styles.FormLabel, styles.FormLabelText)}
+                htmlFor="salary"
+              >
                 Ваша зарплата в&nbsp;месяц
               </label>
 
               <MaskedInput
                 mask={mask}
-                className={classnames(styles.FormInput, {
-                  [styles.FormInputError]:
+                className={classnames(styles.FormInputText, {
+                  [styles.FormInputTextError]:
                     props.touched.salary && props.errors.salary,
                 })}
                 id="salary"
@@ -87,12 +113,13 @@ const ModalForm = () => {
                 name="salary"
                 placeholder="Введите данные"
                 maxLength="20"
+                ref={inputSalaryRef}
                 {...props.getFieldProps('salary')}
               />
 
               <ErrorMessage name="salary">
                 {(msg) => (
-                  <div className={styles.FormInputErrorMessage}>{msg}</div>
+                  <div className={classnames(styles.FormInputTextError, styles.FormInputTextErrorMessage)}>{msg}</div>
                 )}
               </ErrorMessage>
 
@@ -107,11 +134,20 @@ const ModalForm = () => {
             </div>
 
             {state.salary && (
-              <div className={styles.FormGroup}>
-                <p id="checkbox-group" className={styles.FormLabel}>
+              <div
+                className={classnames(
+                  styles.FormGroup,
+                  styles.FormGroupPayments
+                )}
+              >
+                <p id="checkbox-group" className={styles.FormLabelText}>
                   Итого можете внести в&nbsp;качестве досрочных:
                 </p>
-                <div role="group" aria-labelledby="checkbox-group">
+                <div
+                  className={styles.FormGroupCheckboxWrapper}
+                  role="group"
+                  aria-labelledby="checkbox-group"
+                >
                   {Children.toArray(
                     getEarlyPaymentsList(state.salary).map((payment, index) => {
                       return (
@@ -123,15 +159,23 @@ const ModalForm = () => {
                             value={JSON.stringify({
                               [`${index + 1}`]: payment.toString(),
                             })}
+                            className={styles.FormInputCheckbox}
                           />
 
-                          <label htmlFor={`payment-${index + 1}`}>
+                          <label
+                            htmlFor={`payment-${index + 1}`}
+                            className={styles.FormLabelCheckbox}
+                          >
                             {`${formatNumber(payment)} ${plural(
                               payment,
                               ...rubles
-                            )} ${(index + 1) % 2 === 0 ? 'во' : 'в'} ${
-                              index + 1
-                            }-${getListEnding(index + 1)} год`}
+                            )}`}
+                            {'\u00a0'}
+                            <span>
+                              {`${(index + 1) % 2 === 0 ? 'во' : 'в'} ${
+                                index + 1
+                              }-${getListEnding(index + 1)} год`}
+                            </span>
                           </label>
                         </>
                       );
@@ -141,8 +185,10 @@ const ModalForm = () => {
               </div>
             )}
 
-            <div className={styles.FormGroup}>
-              <p className={styles.FormLabel}>Что уменьшаем?</p>
+            <div
+              className={classnames(styles.FormGroup, styles.FormGroupCalcType)}
+            >
+              <p className={styles.FormLabelText}>Что уменьшаем?</p>
               <div className={styles.FormGroupBtnWrapper}>
                 <button
                   className={classnames(
@@ -164,6 +210,7 @@ const ModalForm = () => {
               className={styles.FormBtn}
               type="submit"
               disabled={props.errors.salary}
+              ref={buttonSubmitRef}
             >
               Добавить
             </button>

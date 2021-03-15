@@ -2,6 +2,13 @@
 $primary: #ea0029;
 $secondary: #bec5cc;
 
+$bg-color: linear-gradient(
+    255.35deg,
+    #dc3131 0.83%,
+    rgba(255, 79, 79, 0) 108.93%
+  ),
+  #ff5e56;
+
 // https://eduardoboucas.github.io/include-media/#features
 $breakpoints: (
   phone: 320px,

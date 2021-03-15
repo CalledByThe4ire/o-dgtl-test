@@ -1,1 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Setup
+
+```
+npm install
+```
+
+## Run
+
+```
+npm start
+```
+***
+## [Live Demo](https://o-dgtl-test.vercel.app/)

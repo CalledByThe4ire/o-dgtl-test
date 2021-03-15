@@ -3,52 +3,121 @@
 @import "../../styles/_mixins";
 
 .Form {
+  $form: &;
+
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
 
   &Label {
-    $label: &;
+    &Text {
+      display: flex;
+      padding: 0;
+      margin: 0;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
 
-    display: flex;
-    padding: 0;
-    margin: 0;
-    margin-bottom: 8px;
-    font-weight: 500;
+    &Checkbox {
+      position: relative;
+      display: flex;
+      width: 100%;
+      padding-left: 30px;
+      line-height: 1;
+      border-bottom: 1px solid #dfe3e6;
+
+      @include padding-y(20px);
+
+      @include media(">=tablet") {
+        @include padding-y(21px);
+      }
+
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 8px;
+        display: flex;
+        width: 20px;
+        height: 20px;
+        content: "";
+        border: 1px solid #dfe3e6;
+        border-radius: 6px;
+        transition: all 0.3s ease-in-out;
+        transform: translate(-50%, -50%);
+      }
+
+      &:hover::before {
+        border-color: #000;
+      }
+
+      span:last-of-type {
+        color: #808080;
+      }
+    }
   }
 
   &Input {
-    display: flex;
-    width: 100%;
-    min-height: 40px;
-    padding: 10px;
-    color: #000;
-    border: 1px solid #dfe3e6;
-    border-radius: 3px;
-    transition: all 0.3s ease-in-out;
+    &Text {
+      display: flex;
+      width: 100%;
+      min-height: 40px;
+      padding: 10px;
+      color: #000;
+      border: 1px solid #dfe3e6;
+      border-radius: 3px;
+      transition: all 0.3s ease-in-out;
 
-    &Error {
-      margin-bottom: 4px;
-      border-color: $primary;
+      &Error {
+        margin-bottom: 4px;
+        border-color: $primary;
 
-      &Message {
-        font-size: 10px;
-        line-height: 12px;
-        color: $primary;
+        &Message {
+          font-size: 10px;
+          line-height: 12px;
+          color: $primary;
+        }
+      }
+
+      &:hover {
+        border-color: $secondary;
+      }
+
+      &:disabled {
+        color: #808080;
+        border-color: #808080;
+      }
+
+      &::placeholder {
+        color: #bec5cc;
       }
     }
 
-    &:hover {
-      border-color: $secondary;
-    }
+    &Checkbox {
+      display: none;
 
-    &:disabled {
-      color: #808080;
-      border-color: #808080;
-    }
+      &:checked + {
+        #{$form}LabelCheckbox {
+          &:hover::before {
+            border-color: $primary;
+          }
 
-    &::placeholder {
-      color: #bec5cc;
+          &::before {
+            background: $bg-color;
+            background-image: url("images/check-mark.svg");
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            border-color: $primary;
+          }
+        }
+      }
+
+      &:disabled + {
+        #{$form}LabelCheckbox::before,
+        #{$form}LabelCheckbox:hover::before {
+          background: #bec5cc;
+          border-color: #bec5cc;
+        }
+      }
     }
   }
 
@@ -59,25 +128,44 @@
     flex-flow: column wrap;
     margin-bottom: 24px;
 
-    @include media(">=tablet") {
-      &:nth-child(2) {
+    &CalcType {
+      @include media(">=tablet") {
         flex-flow: row nowrap;
         align-items: center;
         justify-content: flex-start;
-        margin-bottom: 40px;
+        margin-bottom: 42px;
 
         > *:first-child {
           margin: 0;
           margin-right: 78px;
+
+          @include media(">=tablet") {
+            margin-right: 36px;
+          }
+        }
+      }
+
+      @include media(">=desktop") {
+        > *:first-child {
+          margin: 0;
+          margin-right: 34px;
         }
       }
     }
 
-    @include media(">=desktop") {
-      &:nth-child(2) {
-        > *:first-child {
-          margin: 0;
-          margin-right: 32px;
+    &Payments {
+      transform: translateY(-5px);
+
+      @include media(">=tablet") {
+        margin-bottom: 12px;
+      }
+
+      #{$form}LabelText {
+        padding-right: 96px;
+        margin-bottom: initial;
+
+        @include media(">=tablet") {
+          padding-right: initial;
         }
       }
     }
@@ -87,14 +175,6 @@
 
       @include media(">=tablet") {
         @include padding-y(initial);
-      }
-
-      &:last-child {
-        margin-bottom: 100px;
-
-        @include media(">=tablet") {
-          margin-bottom: initial;
-        }
       }
 
       #{$form-group}Btn {
@@ -128,13 +208,7 @@
         &:hover,
         &:active {
           color: #fff;
-          background:
-            linear-gradient(
-              255.35deg,
-              #dc3131 0.83%,
-              rgba(255, 79, 79, 0) 108.93%
-            ),
-            #ff5e56;
+          background: $bg-color;
           transition: inherit;
         }
       }
@@ -146,6 +220,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    min-width: 288px;
     padding: 12px;
     margin-right: auto;
     margin-left: auto;
@@ -153,13 +228,7 @@
     line-height: 16px;
     color: #fff;
     cursor: pointer;
-    background:
-      linear-gradient(
-        255.35deg,
-        #dc3131 0.83%,
-        rgba(255, 79, 79, 0) 108.93%
-      ),
-      #ff5e56;
+    background: $bg-color;
     border-radius: 6px;
     box-shadow: 0 0 24px rgba(234, 0, 41, 0.33);
     transition: all 0.3s ease-in-out;
@@ -198,6 +267,14 @@
 
       &:disabled {
         cursor: not-allowed;
+      }
+    }
+
+    &OffsetTop {
+      margin-top: 100px;
+
+      @include media(">=tablet") {
+        margin-top: initial;
       }
     }
   }
