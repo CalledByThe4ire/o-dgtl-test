@@ -14,10 +14,13 @@ import {
 } from '../../utils';
 import { StoreContext, actions, createAction } from '../../reducer';
 import styles from './Form.module.scss';
+import 'animate.css/animate.min.css';
 
 const MINIMUM_WAGE = 12792;
 
 const rubles = ['рубль', 'рубля', 'рублей'];
+
+const animationBaseClass = 'animate__animated animate__fast';
 
 const mask = createNumberMask({
   prefix: '',
@@ -30,14 +33,20 @@ const ModalForm = () => {
   const store = useContext(StoreContext);
   const dispatch = store.dispatch;
   const state = store.state;
+
   const inputSalaryRef = useRef();
   const buttonSubmitRef = useRef();
 
   useEffect(() => {
-    inputSalaryRef && inputSalaryRef.current.inputElement.focus();
+    if (inputSalaryRef) {
+      const { inputElement } = inputSalaryRef.current;
+      inputElement.focus();
+    }
 
     if (buttonSubmitRef) {
-      buttonSubmitRef.current.classList.add(classnames(styles.FormBtnOffsetTop));
+      buttonSubmitRef.current.classList.add(
+        classnames(styles.FormBtnOffsetTop)
+      );
     }
   }, []);
 
@@ -49,7 +58,9 @@ const ModalForm = () => {
     }
 
     if (buttonSubmitRef.current) {
-      buttonSubmitRef.current.classList.remove(classnames(styles.FormBtnOffsetTop));
+      buttonSubmitRef.current.classList.remove(
+        classnames(styles.FormBtnOffsetTop)
+      );
     }
   };
 
@@ -104,10 +115,18 @@ const ModalForm = () => {
 
               <MaskedInput
                 mask={mask}
-                className={classnames(styles.FormInputText, {
-                  [styles.FormInputTextError]:
-                    props.touched.salary && props.errors.salary,
-                })}
+                className={classnames(
+                  animationBaseClass,
+                  styles.FormInputText,
+                  {
+                    [styles.FormInputTextError]:
+                      props.touched.salary && props.errors.salary,
+                  },
+                  {
+                    animate__shakeX:
+                      props.touched.salary && props.errors.salary,
+                  }
+                )}
                 id="salary"
                 type="text"
                 name="salary"
@@ -119,7 +138,14 @@ const ModalForm = () => {
 
               <ErrorMessage name="salary">
                 {(msg) => (
-                  <div className={classnames(styles.FormInputTextError, styles.FormInputTextErrorMessage)}>{msg}</div>
+                  <div
+                    className={classnames(
+                      styles.FormInputTextError,
+                      styles.FormInputTextErrorMessage
+                    )}
+                  >
+                    {msg}
+                  </div>
                 )}
               </ErrorMessage>
 

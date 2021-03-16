@@ -12,4 +12,4 @@ npm install
 npm start
 ```
 ***
-## [Live Demo](https://o-dgtl-test.vercel.app/)
+## [Live Demo](https://elegant-lalande-f2d4d3.netlify.app/)
